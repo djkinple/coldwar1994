@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ 寒戰行動 ⚡ DJ金寶抽獎任務</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --main-blue: #00d4ff;
+            --error-red: #ff3e3e;
+            --text-color: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app {
+            width: 95%;
+            max-width: 600px;
+            text-align: center;
+            padding: 25px;
+            border: 1px solid #333;
+            background: rgba(15, 15, 20, 0.95);
+            margin: 20px 0;
+        }
+
+        .poster {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            border-bottom: 2px solid var(--main-blue);
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            text-align: left;
+            font-size: 14px;
+            background: #1a1a1f;
+            padding: 15px;
+            border-left: 3px solid var(--main-blue);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--main-blue);
+            border: 1px solid var(--main-blue);
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .btn:hover { background: var(--main-blue); color: #000; }
+        .btn.disabled { border-color: #555; color: #555; cursor: not-allowed; }
+
+        .quiz-container, .form-container, #certificate { display: none; }
+
+        .option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #1a1a1f;
+            border: 1px solid #333;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .option:hover { border-color: var(--main-blue); }
+
+        .flash-red { animation: flashRed 0.4s; }
+        @keyframes flashRed {
+            0% { background: transparent; }
+            50% { background: var(--error-red); }
+            100% { background: transparent; }
+        }
+
+        .cert-box {
+            border: 4px double var(--main-blue);
+            padding: 30px;
+            background: #000;
+            position: relative;
+        }
+
+        .stamp {
+            border: 3px solid var(--error-red);
+            color: var(--error-red);
+            padding: 8px 16px;
+            display: inline-block;
+            transform: rotate(-15deg);
+            font-weight: bold;
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <img src="CW9495_teaser_1s_Final.jpg" alt="寒戰 1994 海報" class="poster">
+
+    <div id="step-auth">
+        <h2>🔥 寒戰宇宙強勢回歸 🔥</h2>
+        <div class="info-box">
+            <strong>《寒戰 1994》5 月 8 日全台上映</strong><br>
+            10 大影帝世紀集結，40 位國際巨星登場。揭開終極謎團，重返 1994 年時代漩渦。戰雲密佈，誰是真正的話事人？
+        </div>
+        <p>完成以下任務解鎖抽獎資格：</p>
+        <a href="https://www.youtube.com/@twdjkinple?sub_confirmation=1" target="_blank" class="btn" onclick="checkStep(1)">1. 訂閱 DJ金寶 YouTube</a>
+        <a href="https://www.facebook.com/djkinple/" target="_blank" class="btn" onclick="checkStep(2)">2. 追蹤 DJ金寶 FB</a>
+        <br>
+        <button id="start-btn" class="btn disabled" disabled onclick="startQuiz()">啟動 15 題卡司挑戰</button>
+    </div>
+
+    <div id="step-quiz" class="quiz-container">
+        <div id="quiz-progress" style="font-size:12px; color:#888; margin-bottom:10px;">進度：0 / 15</div>
+        <h3 id="question-text">載入中...</h3>
+        <div id="options-list"></div>
+    </div>
+
+    <div id="step-form" class="form-container">
+        <h2>✅ 通過審核</h2>
+        <p>輸入你的 YouTube 或 FB 帳號生成證明</p>
+        <input type="text" id="user-account" placeholder="填寫帳號名稱" style="width:80%; padding:12px; margin:10px; background:#222; border:1px solid #444; color:#fff; font-size:16px;">
+        <br>
+        <button class="btn" onclick="generateCert()">生成行動授權書</button>
+    </div>
+
+    <div id="certificate">
+        <div class="cert-box">
+            <img src="CW9495_teaser_1s_Final.jpg" style="width:180px; height:auto; margin-bottom:15px; border:1px solid #222;">
+            <div style="font-size:18px; letter-spacing: 2px; color: var(--main-blue);">寒戰行動：特派員授權書</div>
+            <div style="font-size:24px; color:#fff; margin: 15px 0; font-weight: bold;">5 月 8 日 戰雲密佈</div>
+            <div id="display-account" style="font-size:30px; color: var(--main-blue); margin: 20px 0; font-weight: bold; border-top:1px solid #333; border-bottom:1px solid #333; padding:10px 0;">帳號名稱</div>
+            <p>已通過 15 項全能卡司審核，正式獲得抽獎資格</p>
+            <div style="font-size:12px; color:#888;">DJ金寶 頻道專屬認證</div>
+            <div class="stamp">通過審核</div>
+        </div>
+        <p style="margin-top:25px; font-weight: bold; color: var(--main-blue);">請截圖此畫面，私訊「DJ金寶」粉專報名</p>
+        <button class="btn" onclick="location.reload()">重新開始</button>
+    </div>
+</div>
+
+<script>
+    let step1 = false, step2 = false, currentQuestionIndex = 0;
+    let questions = [
+        { q: "誰飾演警務處副處長劉傑輝？", a: ["郭富城", "梁家輝", "劉德華", "張學友"], c: 0 },
+        { q: "飾演反派李家俊的台灣演員？", a: ["彭于晏", "阮經天", "趙又廷", "楊祐寧"], c: 0 },
+        { q: "《寒戰 2》中簡奧偉律師由誰飾演？", a: ["周潤發", "曾志偉", "任達華", "萬梓良"], c: 0 },
+        { q: "飾演總警司梁紫薇的女星？", a: ["楊采妮", "張曼玉", "劉嘉玲", "林嘉欣"], c: 0 },
+        { q: "飾演 ICAC 調查主任張國柱的演員？", a: ["李治廷", "林家棟", "余文樂", "陳冠希"], c: 0 },
+        { q: "《寒戰 2》飾演前警員何國正的演員？", a: ["楊祐寧", "張孝全", "邱澤", "陳柏霖"], c: 0 },
+        { q: "劉德華在第一集演出的官員職位？", a: ["保安局局長", "警務處長", "政務司長", "特首"], c: 0 },
+        { q: "飾演殉職高級警司徐永基的演員？", a: ["錢嘉樂", "謝天華", "歐陽靖", "黃德斌"], c: 0 },
+        { q: "飾演歐詠恩的文詠珊英文藝名？", a: ["Janice Man", "Angela Baby", "Joey Yung", "G.E.M."], c: 0 },
+        { q: "誰以李文彬一角獲封金像獎影帝？", a: ["梁家輝", "郭富城", "周潤發", "彭于晏"], c: 0 },
+        { q: "《寒戰 1994》中飾演青年時期李文彬？", a: ["劉俊謙", "朱鑑然", "林家熙", "栢天男"], c: 0 },
+        { q: "吳慷仁在《寒戰 1994》飾演的角色？", a: ["潘志昂", "李家俊", "劉傑輝", "張國柱"], c: 0 },
+        { q: "古天樂在《寒戰 1994》演出的職位？", a: ["香港特首", "警務處長", "保安局長", "律政司長"], c: 0 },
+        { q: "《寒戰 1994》中誰飾演冷血副處長蔡元祺？", a: ["吳彥祖", "古天樂", "謝君豪", "周潤發"], c: 0 },
+        { q: "《寒戰 1994》飾演潘怡心的女星？", a: ["廖子妤", "王丹妮", "高海寧", "文詠珊"], c: 0 }
+    ];
+
+    function checkStep(s) {
+        if(s === 1) step1 = true; if(s === 2) step2 = true;
+        if(step1 && step2) {
+            const btn = document.getElementById('start-btn');
+            btn.disabled = false; btn.classList.remove('disabled');
+        }
+    }
+
+    function shuffle(a) { return a.sort(() => Math.random() - 0.5); }
+
+    function startQuiz() {
+        document.getElementById('step-auth').style.display = 'none';
+        document.getElementById('step-quiz').style.display = 'block';
+        questions = shuffle(questions); loadQuestion();
+    }
+
+    function loadQuestion() {
+        const q = questions[currentQuestionIndex];
+        document.getElementById('quiz-progress').innerText = `進度：${currentQuestionIndex + 1} / 15`;
+        document.getElementById('question-text').innerText = q.q;
+        const list = document.getElementById('options-list');
+        list.innerHTML = '';
+        let opts = shuffle(q.a.map((t, i) => ({ t, ic: i === q.c })));
+        opts.forEach(o => {
+            const d = document.createElement('div'); d.className = 'option'; d.innerText = o.t;
+            d.onclick = () => {
+                if(o.ic) {
+                    currentQuestionIndex++;
+                    if(currentQuestionIndex >= 15) {
+                        document.getElementById('step-quiz').style.display = 'none';
+                        document.getElementById('step-form').style.display = 'block';
+                    } else setTimeout(loadQuestion, 200);
+                } else {
+                    document.body.classList.add('flash-red');
+                    setTimeout(() => {
+                        document.body.classList.remove('flash-red');
+                        currentQuestionIndex = 0; questions = shuffle(questions); loadQuestion();
+                    }, 400);
+                }
+            };
+            list.appendChild(d);
+        });
+    }
+
+    function generateCert() {
+        const acc = document.getElementById('user-account').value;
+        if(!acc) return alert('請輸入帳號名稱');
+        document.getElementById('display-account').innerText = acc;
+        document.getElementById('step-form').style.display = 'none';
+        document.querySelector('.poster').style.display = 'none';
+        document.getElementById('certificate').style.display = 'block';
+    }
+</script>
+</body>
+</html>
